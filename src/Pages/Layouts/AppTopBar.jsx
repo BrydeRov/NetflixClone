@@ -23,7 +23,7 @@ const AppTopBar = () => {
                                 <Link className="nav-link active" aria-current="page" to="/Home">Inicio</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" href="#">Series</Link>
+                                <Link className="nav-link" to="/TV">Series</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" href="#">Películas</Link>
@@ -36,7 +36,7 @@ const AppTopBar = () => {
                             </li>
                         </ul>
                         <span className="navbar-text">
-                            <Input placeholder='Basic usage' />
+                            <Input placeholder='Buscar . . .' />
                         </span>
                     </div>
                 </div>

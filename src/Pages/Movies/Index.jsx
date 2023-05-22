@@ -14,7 +14,7 @@ import AppLayout from '../Layouts/AppLayout';
 import MovieCard from '../../Components/MovieCard';
 import ShowMovie from '../../Components/ShowMovie';
 
-const API_KEY = process.env.REACT_APP_API_KEY
+const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY
 
 const Index = () => {
     const [dataMovies, setDataMovies] = useState([])
@@ -24,7 +24,7 @@ const Index = () => {
         const { data } = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?language=en-US&api_key=${API_KEY}`)
         setDataMovies(data)
     } 
-    
+
     useEffect(() => {
         fetchDataMovies()
     }, []);

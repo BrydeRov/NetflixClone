@@ -26,7 +26,7 @@ const AppTopBar = () => {
                                 <Link className="nav-link" to="/TV">Series</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" href="#">Películas</Link>
+                                <Link className="nav-link" to="/Movies">Películas</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" href="#">Novedades Populares</Link>

@@ -31,13 +31,13 @@ const router = createBrowserRouter([
     element: <AppLayout />,
   },
   {
-    path: "/Home",
+    path: "/Movies",
     element: <MoviesHome />
   },
   {
     path: '/TV',
     element: <TVHome />
-  }
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

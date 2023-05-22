@@ -18,4 +18,4 @@ const MovieCard = (props) => {
     )
 }
 
-export default MovieCard
+export default MovieCard;

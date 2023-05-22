@@ -6,10 +6,9 @@ function AppLayout(props) {
     const config = {
         initialColorMode: 'dark',
         useSystemColorMode: false,
-      }
-      
-      // 3. extend the theme
-      const theme = extendTheme({ config })
+    }
+    
+    const theme = extendTheme({ config })
     return (
         <ChakraProvider theme={theme}>
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />

@@ -7,11 +7,13 @@ import { useEffect, useState } from 'react'
 import AppLayout from '../Layouts/AppLayout'
 import MovieCard from '../../Components/MovieCard'
 
+const API_KEY = process.env.REACT_APP_API_KEY
+
 const Index = () => {
     const [dataTV, setDataTV] = useState([])
 
     const fetchDataTV = async () =>{
-        const { data } = await axios.get('https://api.themoviedb.org/3/tv/top_rated?language=en-US&api_key=d7946e2b0e8a32d77695184bde02cd1d')
+        const { data } = await axios.get(`https://api.themoviedb.org/3/tv/top_rated?language=en-US&api_key=${API_KEY}`)
         setDataTV(data)
     } 
     

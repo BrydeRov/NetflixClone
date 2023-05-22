@@ -11,14 +11,16 @@ function AppLayout(props) {
     const theme = extendTheme({ config })
     return (
         <ChakraProvider theme={theme}>
-            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-            <CSSReset />
-            <Box>
-                <AppTopBar />
-                <div className="">
-                    {props.children}
-                </div>
-            </Box>
+            <div className="bg-dark text-white">
+                <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+                <CSSReset />
+                <Box>
+                    <AppTopBar />
+                    <div className="">
+                        {props.children}
+                    </div>
+                </Box>
+            </div>
         </ChakraProvider>
     );
 }

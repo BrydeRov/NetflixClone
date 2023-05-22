@@ -36,22 +36,30 @@ const Index = () => {
     
     return (
         <AppLayout>
-            <div className='d-inline-flex flex-wrap justify-content-center'>                
+            <div className='d-flex flex-wrap justify-content-center'>
                 {movieShow === null ? dataMovies?.results?.map((item, index) => {
                     return (
-                        <Link onClick={() => {showMovie(item)}} key={index}>                        
-                            <div className='m-4'>
-                                    <MovieCard
-                                        image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
-                                        title={item.original_title}
-                                    />
-                            </div>
-                        </Link>
+                        <>
+                            <MovieCard
+                                onClick={() => {showMovie(item)}}
+                                image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
+                                title={item.original_title}
+                            />
+                        </>
+                        // <div className='col-4' key={index}>
+                        //     <Link onClick={() => {showMovie(item)}}>                        
+                        //     </Link>
+                        // </div>
                     )
                 }) :
                     <>
                     <Tooltip label='Regresar'>
-                        <IconButton onClick={() => {setMovieShow(null)}} aria-label='Search database' icon={<ArrowBackIcon />} />
+                        <IconButton
+                            colorScheme='blue' 
+                            onClick={() => {setMovieShow(null)}} 
+                            aria-label='Search database' 
+                            icon={<ArrowBackIcon />} 
+                        />
                     </Tooltip>
                         <br />
                         <ShowMovie

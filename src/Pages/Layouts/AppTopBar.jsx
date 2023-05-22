@@ -8,7 +8,7 @@ import { Input } from '@chakra-ui/react';
 const AppTopBar = () => {
     return (
         <div>
-            <nav className="navbar navbar-expand-lg bg-light">
+            <nav className="navbar navbar-expand-lg">
                 <div className="container-fluid">
                     <Link className="navbar-brand mx-4" to="/">
                         <img src={logo} width='80'/>
@@ -20,19 +20,19 @@ const AppTopBar = () => {
                     <div className="collapse navbar-collapse" id="navbarText">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to="/Home">Inicio</Link>
+                                <Link className="nav-link text-white active" aria-current="page" to="/">Inicio</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/TV">Series</Link>
+                                <Link className="nav-link text-white" to="/TV">Series</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/Movies">Películas</Link>
+                                <Link className="nav-link text-white" to="/Movies">Películas</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" href="#">Novedades Populares</Link>
+                                <Link className="nav-link text-white" href="#">Novedades Populares</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" href="#">Mi lista</Link>
+                                <Link className="nav-link text-white" href="#">Mi lista</Link>
                             </li>
                         </ul>
                         <span className="navbar-text">

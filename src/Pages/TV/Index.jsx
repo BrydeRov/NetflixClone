@@ -8,7 +8,7 @@ import AppLayout from '../Layouts/AppLayout'
 import MovieCard from '../../Components/MovieCard'
 
 const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY
-console.log(API_KEY)
+
 const Index = () => {
     const [dataTV, setDataTV] = useState([])
 

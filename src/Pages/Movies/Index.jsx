@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Chakra UI
-import { IconButton, Tooltip } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Image, Button, IconButton, Tooltip, Card, CardHeader, CardBody, CardFooter, Flex, Avatar, Box, Heading, } from '@chakra-ui/react'
+import { ArrowBackIcon, ArrowDownIcon } from '@chakra-ui/icons';
+import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 
 // Components
 import AppLayout from '../Layouts/AppLayout';
@@ -37,10 +38,21 @@ const Index = () => {
     return (
         <AppLayout>
             <div className='d-flex flex-wrap justify-content-center'>
-                {movieShow === null ? dataMovies?.results?.map((item, index) => {
+                {dataMovies === null ? 
+                    <div>
+                        <Skeleton height='20px' /> 
+                        <Skeleton height='20px' /> 
+                        <Skeleton height='20px' /> 
+                        <Skeleton height='20px' /> 
+                        <Skeleton height='20px' /> 
+                        <Skeleton height='20px' /> 
+                    </div>
+                    : 
+                    movieShow === null ? dataMovies?.results?.map((item, index) => {
                     return (
                         <>
                             <MovieCard
+                                key={index}
                                 onClick={() => {showMovie(item)}}
                                 image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
                                 title={item.original_title}

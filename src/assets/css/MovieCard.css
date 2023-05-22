@@ -10,12 +10,9 @@
 	margin: 0px 1rem
 }
 
-@media screen only(){
-	
-}
-
 .netflix-card:hover {
 	transform: scale(1.05);
+	cursor: pointer;
 }
 
 .netflix-card__image {

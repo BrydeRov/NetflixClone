@@ -4,11 +4,10 @@ import { Image, Card, CardBody, Heading} from '@chakra-ui/react'
 
 const MovieCard = (props) => {
     return (
-        <div className='netflix-card m-3' onClick={props.onClick}>
-            <Card maxW={{ base: '100%', sm: '250px' }} size="sm" className='rounded'>
+        <Card maxW={{ base: '100%', sm: '300px' }} size="sm"  onClick={props.onClick} className='netflix-card rounded m-3'>
                 <Image
                     className='rounded'
-                    objectFit='cover'
+                    // objectFit='cover'
                     src={props.image    }
                     alt='Chakra UI'
                 />
@@ -16,7 +15,8 @@ const MovieCard = (props) => {
                     <Heading size='sm'>{props.title}</Heading>
                 </CardBody>
             </Card>
-        </div>
+        // <div className='netflix-card m-3'>
+        // </div>
         // <div className="netflix-card my-3" onClick={props.onClick}>
         //     <img 
         //         className="netflix-card__image" 

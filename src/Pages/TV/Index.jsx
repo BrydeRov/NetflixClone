@@ -3,6 +3,7 @@ import axios from 'axios'
 
 // React
 import { useEffect, useState } from 'react'
+
 // Components
 import AppLayout from '../Layouts/AppLayout'
 import MovieCard from '../../Components/MovieCard'

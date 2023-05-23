@@ -5,8 +5,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+
 // Chakra UI
-import { Image, Button, IconButton, Tooltip, Card, CardHeader, CardBody, CardFooter, Flex, Avatar, Box, Heading, } from '@chakra-ui/react'
+import { Image, Button,Stack, IconButton, Tooltip, Card, CardHeader, CardBody, CardFooter, Flex, Avatar, Box, Heading, } from '@chakra-ui/react'
 import { ArrowBackIcon, ArrowDownIcon } from '@chakra-ui/icons';
 import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 
@@ -38,17 +39,7 @@ const Index = () => {
     return (
         <AppLayout>
             <div className='d-flex flex-wrap justify-content-center'>
-                {dataMovies === null ? 
-                    <div>
-                        <Skeleton height='20px' /> 
-                        <Skeleton height='20px' /> 
-                        <Skeleton height='20px' /> 
-                        <Skeleton height='20px' /> 
-                        <Skeleton height='20px' /> 
-                        <Skeleton height='20px' /> 
-                    </div>
-                    : 
-                    movieShow === null ? dataMovies?.results?.map((item, index) => {
+                { movieShow === null ? dataMovies?.results?.map((item, index) => {
                     return (
                         <>
                             <MovieCard
@@ -56,6 +47,7 @@ const Index = () => {
                                 onClick={() => {showMovie(item)}}
                                 image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
                                 title={item.original_title}
+                                footer="wenas"
                             />
                         </>
                         // <div className='col-4' key={index}>
@@ -65,20 +57,24 @@ const Index = () => {
                     )
                 }) :
                     <>
-                    <Tooltip label='Regresar'>
-                        <IconButton
-                            colorScheme='blue' 
-                            onClick={() => {setMovieShow(null)}} 
-                            aria-label='Search database' 
-                            icon={<ArrowBackIcon />} 
-                        />
-                    </Tooltip>
                         <br />
                         <ShowMovie
                             coverImage={'https://image.tmdb.org/t/p/original/' + movieShow?.poster_path}
                             title={movieShow?.original_title}
                             description={movieShow?.overview}
                             date={movieShow?.release_date}
+                            footer={
+                                <>
+                                    <Tooltip label='Regresar'>
+                                        <IconButton
+                                            colorScheme='blue' 
+                                            onClick={() => {setMovieShow(null)}} 
+                                            aria-label='Search database' 
+                                            icon={<ArrowBackIcon />} 
+                                        />
+                                    </Tooltip>
+                                </>
+                            }
                         />
                     </> 
                 }

@@ -11,7 +11,7 @@ function AppLayout(props) {
     const theme = extendTheme({ config })
     return (
         <ChakraProvider theme={theme}>
-            <div className="bg-dark text-white">
+            <div className="bg-dark text-white" style={{height: '100vh'}}>
                 <ColorModeScript initialColorMode={theme.config.initialColorMode} />
                 <CSSReset />
                 <Box>

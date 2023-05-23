@@ -7,8 +7,9 @@ import './assets/css/mains.css'
 import AppLayout from './Pages/Layouts/AppLayout'
 import MoviesHome from './Pages/Movies/Index'
 import TVHome from './Pages/TV/Index'
+import MiLista from './Pages/MiLista'
 
-import { Box } from '@chakra-ui/react'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 import {
   createBrowserRouter,
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: '/TV',
     element: <TVHome />
+  },
+  {
+    path: '/MiLista',
+    element: <MiLista />
   },
 ]);
 

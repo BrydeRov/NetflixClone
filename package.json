@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.11.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.10.5",
     "framer-motion": "^10.12.12",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",

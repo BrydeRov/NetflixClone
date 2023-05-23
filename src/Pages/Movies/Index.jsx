@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 // Chakra UI
 import { Image, Button,Stack, IconButton, Tooltip, Card, CardHeader, CardBody, CardFooter, Flex, Avatar, Box, Heading, } from '@chakra-ui/react'
-import { ArrowBackIcon, ArrowDownIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, ArrowDownIcon, SearchIcon } from '@chakra-ui/icons';
 import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 
 // Components
@@ -31,8 +31,17 @@ const Index = () => {
         fetchDataMovies()
     }, []);
 
+    // useEffect(() => {
+    //     setList(localStorage.getItem("list"))
+    // }, []);
+
     const showMovie = (data) => {
         setMovieShow(data);
+    }
+
+    const addToList = (data) => {
+        localStorage.getItem("list") ? localStorage.setItem("list" , localStorage.getItem("list").push() + data.push()) : localStorage.setItem("list" , data)
+        console.log(localStorage.getItem("list"))
     }
 
     
@@ -47,13 +56,13 @@ const Index = () => {
                                 onClick={() => {showMovie(item)}}
                                 image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
                                 title={item.original_title}
-                                footer="wenas"
+                                buttons={
+                                    <Tooltip label='Agregar'>
+                                        <i className="bi bi-bookmark" onClick={() => {addToList(item)}}></i>
+                                    </Tooltip>
+                                }
                             />
                         </>
-                        // <div className='col-4' key={index}>
-                        //     <Link onClick={() => {showMovie(item)}}>                        
-                        //     </Link>
-                        // </div>
                     )
                 }) :
                     <>
@@ -65,14 +74,12 @@ const Index = () => {
                             date={movieShow?.release_date}
                             footer={
                                 <>
-                                    <Tooltip label='Regresar'>
-                                        <IconButton
-                                            colorScheme='blue' 
-                                            onClick={() => {setMovieShow(null)}} 
-                                            aria-label='Search database' 
-                                            icon={<ArrowBackIcon />} 
-                                        />
-                                    </Tooltip>
+                                    <Button colorScheme='red' onClick={() => {setMovieShow(null)}} >
+                                        Regresar
+                                    </Button>
+                                    <Button className='mx-2' colorScheme='messenger' onClick={() => {setMovieShow(null)}} >
+                                        Ver Trailer
+                                    </Button>
                                 </>
                             }
                         />

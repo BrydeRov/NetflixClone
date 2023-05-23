@@ -32,7 +32,7 @@ const AppTopBar = () => {
                                 <Link className="nav-link text-white" href="#">Novedades Populares</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link text-white" href="#">Mi lista</Link>
+                                <Link className="nav-link text-white" to="/MiLista">Mi lista</Link>
                             </li>
                         </ul>
                         <span className="navbar-text">

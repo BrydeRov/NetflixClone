@@ -15,7 +15,7 @@ function AppLayout(props) {
                 <ColorModeScript initialColorMode={theme.config.initialColorMode} />
                 <CSSReset />
                 <Box>
-                    <AppTopBar />
+                    <AppTopBar inputSearch={props.inputSearch}/>
                     <div className="">
                         {props.children}
                     </div>

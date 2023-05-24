@@ -5,7 +5,7 @@ import logo from '../../../public/Images/Logonetflix.png';
 // Chakra UI
 import { Input } from '@chakra-ui/react';
 
-const AppTopBar = () => {
+const AppTopBar = (props) => {
     return (
         <div>
             <nav className="navbar navbar-expand-lg">
@@ -36,7 +36,7 @@ const AppTopBar = () => {
                             </li>
                         </ul>
                         <span className="navbar-text">
-                            <Input placeholder='Buscar . . .' />
+                            {props.inputSearch}
                         </span>
                     </div>
                 </div>

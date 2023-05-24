@@ -7,9 +7,7 @@ import { Link } from 'react-router-dom';
 
 
 // Chakra UI
-import { Image, Button,Stack, IconButton, Tooltip, Card, CardHeader, CardBody, CardFooter, Flex, Avatar, Box, Heading, } from '@chakra-ui/react'
-import { ArrowBackIcon, ArrowDownIcon, SearchIcon } from '@chakra-ui/icons';
-import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
+import { Button, Tooltip, Input, Skeleton } from '@chakra-ui/react'
 
 // Components
 import AppLayout from '../Layouts/AppLayout';
@@ -21,34 +19,67 @@ const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY
 const Index = () => {
     const [dataMovies, setDataMovies] = useState([])
     const [movieShow, setMovieShow] = useState(null)
+    const [query , setQuery] = useState(null);
+    const [loading , setLoading] = useState(true);
+    const movieURL = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&api_key=${API_KEY}`
+    
+    const movieSearchURL = (input) => {
+        setLoading(false)
+        return `https://api.themoviedb.org/3/search/movie?query=${input}&api_key=${API_KEY}`;
+    }
 
     const fetchDataMovies = async () =>{
-        const { data } = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?language=en-US&api_key=${API_KEY}`)
+        const { data } = await axios.get(query === null ? movieURL : movieSearchURL(query));
         setDataMovies(data)
-    } 
+        setLoading(false)
+    }
 
     useEffect(() => {
         fetchDataMovies()
     }, []);
-
-    // useEffect(() => {
-    //     setList(localStorage.getItem("list"))
-    // }, []);
 
     const showMovie = (data) => {
         setMovieShow(data);
     }
 
     const addToList = (data) => {
-        localStorage.getItem("list") ? localStorage.setItem("list" , localStorage.getItem("list").push() + data.push()) : localStorage.setItem("list" , data)
-        console.log(localStorage.getItem("list"))
+        console.log(data)
+        // localStorage.getItem("list") ? localStorage.setItem("list" , localStorage.getItem("list").push() + data.push()) : localStorage.setItem("list" , data)
     }
+
+    const handleChange = (event) => {
+        setQuery(event.target.value);
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            fetchDataMovies(    )
+        }
+    };
 
     
     return (
-        <AppLayout>
+        <AppLayout 
+            inputSearch={
+                <Input 
+                    placeholder='Buscar . . .' 
+                    style={{color: 'white'}}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                />
+            } 
+        >
             <div className='d-flex flex-wrap justify-content-center'>
-                { movieShow === null ? dataMovies?.results?.map((item, index) => {
+                
+                { loading === true ? 
+                [...Array(15)].map((_, index) => (
+                    <Skeleton
+                        key={index}
+                        height='180px'
+                        width='330px'
+                        className='rounded m-3'
+                    />
+                )) : movieShow === null ? dataMovies?.results?.filter(item => item.backdrop_path != null).map((item, index) => {
                     return (
                         <>
                             <MovieCard

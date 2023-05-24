@@ -2,9 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../public/Images/Logonetflix.png';
 
-// Chakra UI
-import { Input } from '@chakra-ui/react';
-
 const AppTopBar = (props) => {
     return (
         <div>

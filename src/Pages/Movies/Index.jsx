@@ -24,6 +24,7 @@ const Index = () => {
     const movieURL = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&api_key=${API_KEY}`
     
     const movieSearchURL = (input) => {
+        setDataMovies(null)
         setLoading(false)
         return `https://api.themoviedb.org/3/search/movie?query=${input}&api_key=${API_KEY}`;
     }

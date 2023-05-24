@@ -22,6 +22,7 @@ const Index = () => {
     const [query , setQuery] = useState(null);
     const [loading , setLoading] = useState(true);
     const movieURL = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&api_key=${API_KEY}`
+    const [array, setArray] = useState([localStorage.getItem("list")]);
     
     const movieSearchURL = (input) => {
         setDataMovies(null)
@@ -30,6 +31,7 @@ const Index = () => {
     }
 
     const fetchDataMovies = async () =>{
+        setLoading(true)
         const { data } = await axios.get(query === null ? movieURL : movieSearchURL(query));
         setDataMovies(data)
         setLoading(false)
@@ -44,8 +46,14 @@ const Index = () => {
     }
 
     const addToList = (data) => {
-        console.log(data)
-        // localStorage.getItem("list") ? localStorage.setItem("list" , localStorage.getItem("list").push() + data.push()) : localStorage.setItem("list" , data)
+        console.log(JSON.parse(array))
+        setArray([...array, data])
+        console.log(array)
+        // localStorage.clear();
+        localStorage.setItem("list" , JSON.stringify(array))
+        console.log(localStorage)
+        // localStorage.getItem("list") ? localStorage.setItem("list" , localStorage.getItem("list") + ',' + JSON.stringify(array)) :  localStorage.setItem("list" , JSON.stringify(array))
+        // console.log(localStorage)
     }
 
     const handleChange = (event) => {

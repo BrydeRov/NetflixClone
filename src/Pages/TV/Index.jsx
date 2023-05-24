@@ -15,15 +15,16 @@ const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY
 
 const URL = `https://api.themoviedb.org/3/tv/top_rated?language=en-US&api_key=${API_KEY}`;
 
-const tvSearchURL =  (input) => {
-    return `https://api.themoviedb.org/3/search/tv?query=${input}`;
-};
 const Index = () => {
     const [dataTV, setDataTV] = useState([])
     const [tvShow, setTvShow] = useState(null)
     const [query, setQuery] = useState(null);
     const [loading, setLoading] = useState(true);
     
+    const tvSearchURL =  (input) => {
+        setDataTV(null)
+        return `https://api.themoviedb.org/3/search/tv?query=${input}&api_key=${API_KEY}`;
+    };
 
     const fetchDataTV = async () =>{
         const { data } = await axios.get(query === null ? URL : tvSearchURL(query))
@@ -58,7 +59,7 @@ const Index = () => {
             />
         } >
         <div className='d-flex flex-wrap justify-content-center'>
-            { tvShow === null ? dataTV?.results?.map((item, index) => {
+            { tvShow === null ? dataTV?.results?.filter(item => item.backdrop_path != null).map((item, index) => {
                 return (
                     <>
                         <MovieCard

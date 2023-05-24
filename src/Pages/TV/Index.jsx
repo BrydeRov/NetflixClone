@@ -49,6 +49,13 @@ const Index = () => {
         }
     };
     
+    const addToList = (data) => {
+        const localList = localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : localStorage.setItem("list" , '[]')
+        localList === undefined ? [data] : localList.push(data);
+
+        localStorage.setItem("list" , JSON.stringify(localList))
+    }
+    
     return (
         <AppLayout inputSearch={
             <Input 

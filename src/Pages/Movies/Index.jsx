@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 
 // Chakra UI
-import { Button, Tooltip, Input, Skeleton } from '@chakra-ui/react'
+import { Button, Tooltip, Input, Skeleton, useToast } from '@chakra-ui/react'
 
 // Components
 import AppLayout from '../Layouts/AppLayout';
@@ -17,6 +17,7 @@ import ShowMovie from '../../Components/ShowMovie';
 const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY
 
 const Index = () => {
+    const toast = useToast()
     const [dataMovies, setDataMovies] = useState([])
     const [movieShow, setMovieShow] = useState(null)
     const [query , setQuery] = useState(null);
@@ -44,13 +45,20 @@ const Index = () => {
     const showMovie = (data) => {
         setMovieShow(data);
     }
-    // const [localList, setLocalList] = useState();
     
     const addToList = (data) => {
-        const localList = JSON.parse(localStorage.getItem("list"))
-        localList.push(data);
+        const localList = localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : localStorage.setItem("list" , '[]')
+        localList === undefined ? [data] : localList.push(data);
 
         localStorage.setItem("list" , JSON.stringify(localList))
+
+        toast({
+            title: data.original_title + ' agregada a tu lista 🎥',
+            description: "¡Ve a tu lista para ver las peliculas guardadas!",
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+        })
     }
 
     const handleChange = (event) => {

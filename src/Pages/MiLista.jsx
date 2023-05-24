@@ -7,6 +7,8 @@ import ShowMovie from '../Components/ShowMovie';
 
 import { Button, Tooltip } from '@chakra-ui/react'
 
+import { DeleteIcon } from '@chakra-ui/icons';
+
 const MiLista = () => {
     const [movieShow, setMovieShow] = useState(null);
     const [mapArray, setMapArray] = useState(null);
@@ -22,10 +24,18 @@ const MiLista = () => {
         setMovieShow(data);
     }
 
+    const deleteList = () => {
+        localStorage.removeItem("list");
+        setMapArray(null)
+    }
+
     return (
         <AppLayout> 
+            <Button onClick={() => {deleteList()}} leftIcon={<DeleteIcon />} colorScheme='red' variant='solid'>
+                Borrar peliculas de mi lista
+            </Button>
+
             <div className='d-flex flex-wrap justify-content-center'>
-                
                 {movieShow === null ? mapArray?.filter(item => item.backdrop_path != null).map((item, index) => {
                     return (
                         <>
@@ -36,8 +46,8 @@ const MiLista = () => {
                                 title={item.original_title}
                                 buttons={
                                     <Tooltip label='Agregar'>
-                                        <i className="bi bi-bookmark" onClick={() => {addToList(item)}}></i>
-                                    </Tooltip>
+                                        <i className="bi bi-bookmark"></i>
+                                    </Tooltip>  
                                 }
                             />
                         </>

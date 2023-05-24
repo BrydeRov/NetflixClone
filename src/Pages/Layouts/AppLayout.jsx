@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppTopBar from './AppTopBar';
 import { ChakraProvider, extendTheme, Box, CSSReset, ColorModeScript } from "@chakra-ui/react";
 
 function AppLayout(props) {
+    useEffect(() => {
+        if(!localStorage.getItem("list")){
+            localStorage.setItem("list" , '[]')
+        } 
+    }, []);
+
     const config = {
         initialColorMode: 'dark',
         useSystemColorMode: false,

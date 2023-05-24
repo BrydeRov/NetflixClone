@@ -18,6 +18,10 @@ const MiLista = () => {
         setMapArray(JSON.parse(listArray))
     },[]);
 
+    const showMovie = (data) => {
+        setMovieShow(data);
+    }
+
     return (
         <AppLayout> 
             <div className='d-flex flex-wrap justify-content-center'>

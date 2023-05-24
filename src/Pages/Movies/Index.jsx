@@ -44,14 +44,13 @@ const Index = () => {
     const showMovie = (data) => {
         setMovieShow(data);
     }
-    const [localList, setLocalList] = useState();
+    // const [localList, setLocalList] = useState();
     
     const addToList = (data) => {
-        setLocalList(JSON.parse(localStorage.getItem("list")))
-        const newArray = localList == null ? [] : localList
-        newArray.push(data)
+        const localList = JSON.parse(localStorage.getItem("list"))
+        localList.push(data);
 
-        localStorage.setItem("list" , JSON.stringify(newArray))
+        localStorage.setItem("list" , JSON.stringify(localList))
     }
 
     const handleChange = (event) => {

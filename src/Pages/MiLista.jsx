@@ -5,28 +5,24 @@ import AppLayout from './Layouts/AppLayout';
 import MovieCard from '../Components/MovieCard';
 import ShowMovie from '../Components/ShowMovie';
 
-import { Button, Tooltip, Input, Skeleton } from '@chakra-ui/react'
+import { Button, Tooltip } from '@chakra-ui/react'
 
 const MiLista = () => {
-    const [list, setList] = useState([]);
     const [movieShow, setMovieShow] = useState(null);
-    const data = JSON.parse(localStorage.getItem("list"));
-    console.log(data[0].original_title)
-    // console.log(data?.original_title)
-    console.log(typeof(data));
+    const [mapArray, setMapArray] = useState(null);
+    
+
+    const listArray = localStorage.getItem("list");
     
     useEffect(() => {
-        // setList([data])
+        setMapArray(JSON.parse(listArray))
     },[]);
 
     return (
-        <AppLayout>
-            <p>
-                {list}
-            </p>
+        <AppLayout> 
             <div className='d-flex flex-wrap justify-content-center'>
                 
-                {movieShow === null ? data?.filter(item => item.backdrop_path != null).map((item, index) => {
+                {movieShow === null ? mapArray?.filter(item => item.backdrop_path != null).map((item, index) => {
                     return (
                         <>
                             <MovieCard

@@ -44,16 +44,14 @@ const Index = () => {
     const showMovie = (data) => {
         setMovieShow(data);
     }
-
+    const [localList, setLocalList] = useState();
+    
     const addToList = (data) => {
-        console.log(JSON.parse(array))
-        setArray([...array, data])
-        console.log(array)
-        // localStorage.clear();
-        localStorage.setItem("list" , JSON.stringify(array))
-        console.log(localStorage)
-        // localStorage.getItem("list") ? localStorage.setItem("list" , localStorage.getItem("list") + ',' + JSON.stringify(array)) :  localStorage.setItem("list" , JSON.stringify(array))
-        // console.log(localStorage)
+        setLocalList(JSON.parse(localStorage.getItem("list")))
+        const newArray = localList == null ? [] : localList
+        newArray.push(data)
+
+        localStorage.setItem("list" , JSON.stringify(newArray))
     }
 
     const handleChange = (event) => {

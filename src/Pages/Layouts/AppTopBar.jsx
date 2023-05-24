@@ -25,9 +25,9 @@ const AppTopBar = (props) => {
                             <li className="nav-item">
                                 <Link className="nav-link text-white" to="/Movies">Películas</Link>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <Link className="nav-link text-white" href="#">Novedades Populares</Link>
-                            </li>
+                            </li> */}
                             <li className="nav-item">
                                 <Link className="nav-link text-white" to="/MiLista">Mi lista</Link>
                             </li>

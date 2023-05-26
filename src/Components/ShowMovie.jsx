@@ -6,14 +6,7 @@ import { Image, Stack, Card, CardBody, CardFooter, Heading,Button } from '@chakr
 const ShowMovie = (props) => {
     return (
         <>
-            <iframe 
-                width="560" 
-                height="315" 
-                src={`https://www.youtube.com/embed/${props.videoKey}`} 
-                title="YouTube video player" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowFullScreen
-            />
+            {props.videoFrame}
             <Card direction={{ base: 'column', sm: 'row' }} overflow='hidden' variant='outline' className="bg-dark text-white border-dark">
                 <Image objectFit='cover' maxW={{ base: '100%', sm: '200px' }}
                     src={props.coverImage}

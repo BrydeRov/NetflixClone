@@ -7,7 +7,7 @@ import ShowMovie from '../Components/ShowMovie';
 
 import { Button, Tooltip } from '@chakra-ui/react'
 
-import { DeleteIcon, SmallAddIcon } from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 const MiLista = () => {
     const [movieShow, setMovieShow] = useState(null);

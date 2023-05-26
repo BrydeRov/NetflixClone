@@ -47,6 +47,7 @@ const Index = () => {
     }
     
     const showMovie = (data) => {
+        setMovieVideo(null)
         fetchVideo(data.id)
         setMovieShow(data);
     }
@@ -127,7 +128,18 @@ const Index = () => {
                             title={movieShow?.original_title}
                             description={movieShow?.overview}
                             date={movieShow?.release_date}
-                            videoKey={movieVideo}
+                            videoFrame={
+                                (movieVideo != undefined || null) ? 
+                                    <iframe 
+                                        width="100%" 
+                                        height="500" 
+                                        src={`https://www.youtube.com/embed/${movieVideo}`} 
+                                        title="YouTube video player" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                        allowFullScreen
+                                    />
+                                : ''
+                            }
                             footer={
                                 <>
                                     <Button colorScheme='red' onClick={() => {setMovieShow(null)}} >

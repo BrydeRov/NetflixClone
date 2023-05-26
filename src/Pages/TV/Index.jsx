@@ -17,12 +17,15 @@ const URL = `https://api.themoviedb.org/3/tv/top_rated?language=en-US&api_key=${
 
 const Index = () => {
     const toast = useToast()
-    const [dataTV, setDataTV] = useState([])
-    const [tvShow, setTvShow] = useState(null)
-    const [query, setQuery] = useState(null);
+
+    // UseState
     const [myList, setMyList] = useState();
-    
+    const [dataTV, setDataTV] = useState([])
+    const [tvVideo, setTvVideo] = useState();
+    const [query, setQuery] = useState(null);
+    const [tvShow, setTvShow] = useState(null)
     const [loading, setLoading] = useState(true);
+    
     
     const tvSearchURL =  (input) => {
         setDataTV(null)
@@ -33,14 +36,16 @@ const Index = () => {
         const { data } = await axios.get(query === null ? URL : tvSearchURL(query))
         setDataTV(data)
     } 
-    
-    useEffect(() => {
-        fetchDataTV()
-        setMyList(JSON.parse(localStorage.getItem("list")))
-    }, []);
 
+    const fetchVideo = async (tv_id) => {
+        const { data } = await axios.get(`https://api.themoviedb.org/3/tv/${tv_id}/season/1/videos?api_key=${API_KEY}`)
+        setTvVideo(data?.results[0]?.key)
+        console.log(data.results[0].key)
+    }
 
     const showTV = (data) => {
+        setTvVideo(null)
+        fetchVideo(data.id);
         setTvShow(data);
     }
 
@@ -68,6 +73,11 @@ const Index = () => {
             isClosable: true,
         })
     }
+
+    useEffect(() => {
+        fetchDataTV()
+        setMyList(JSON.parse(localStorage.getItem("list")))
+    }, []);
     
     return (
         <AppLayout inputSearch={
@@ -82,17 +92,18 @@ const Index = () => {
             { tvShow === null ? dataTV?.results?.filter(item => item.backdrop_path != null).map((item, index) => {
                 return (
                     <>
-                        <MovieCard
-                            key={index}
-                            onClick={() => {showTV(item)}}
-                            image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
-                            title={item.name}
-                            buttons={
-                                <Tooltip label={myList?.find(el => el.name == item.name) ? 'Agregada' : 'Agregar'}>
-                                    <i className={`${myList?.find(el => el.name == item.name) ? 'bi bi-bookmark-fill text-danger' : 'bi bi-bookmark'}`} onClick={() => {addToList(item)}}></i>
-                                </Tooltip>
-                            }
-                        />
+                        <div key={index}>
+                            <MovieCard
+                                onClick={() => {showTV(item)}}
+                                image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
+                                title={item.name}
+                                buttons={
+                                    <Tooltip label={myList?.find(el => el.name == item.name) ? 'Agregada' : 'Agregar'}>
+                                        <i className={`${myList?.find(el => el.name == item.name) ? 'bi bi-bookmark-fill text-danger' : 'bi bi-bookmark'}`} onClick={() => {addToList(item)}}></i>
+                                    </Tooltip>
+                                }
+                            />
+                        </div>
                     </>
                 )
             }) :
@@ -102,7 +113,19 @@ const Index = () => {
                         coverImage={'https://image.tmdb.org/t/p/original/' + tvShow?.poster_path}
                         title={tvShow?.original_title}
                         description={tvShow?.overview}
-                        date={tvShow?.release_date}
+                        videoFrame={
+                            (tvVideo != undefined || null) ? 
+                            <iframe 
+                                width="560" 
+                                height="315" 
+                                src={`https://www.youtube.com/embed/${tvVideo}`} 
+                                title="YouTube video player" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowFullScreen
+                            />
+                            : ''
+                        }
+                        // videoKey={tvVideo}
                         footer={
                             <>
                                 <Button colorScheme='red' onClick={() => {setTvShow(null)}} >

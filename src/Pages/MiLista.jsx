@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react'
 
 import AppLayout from './Layouts/AppLayout';
-import { Link } from 'react-router-dom';
 import MovieCard from '../Components/MovieCard';
 import ShowMovie from '../Components/ShowMovie';
 
-import { Button, Tooltip } from '@chakra-ui/react'
+import { Button, Tooltip, useToast } from '@chakra-ui/react'
 
 import { DeleteIcon } from '@chakra-ui/icons';
 
 const MiLista = () => {
+    const toast = useToast()
+    
     const [movieShow, setMovieShow] = useState(null);
     const [mapArray, setMapArray] = useState(null);
     
-
     const listArray = localStorage.getItem("list");
     
-    useEffect(() => {
-        setMapArray(JSON.parse(listArray))
-    },[]);
 
     const showMovie = (data) => {
         setMovieShow(data);
@@ -28,6 +25,24 @@ const MiLista = () => {
         localStorage.removeItem("list");
         setMapArray(null)
     }
+
+    const deleteListItem = (data, index) => {
+        const localList = localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : localStorage.setItem("list" , '[]')
+        
+        localList.length === 1 ? deleteList() : localStorage.setItem("list" , JSON.stringify(localList.filter(el => el.id != data.id)))
+        setMapArray(localList.filter(el => el.id != data.id))
+
+        toast({
+            title: `Se ha borrado ${data.original_title || data.original_name} de tu lista`,
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+        })    
+    }
+
+    useEffect(() => {       
+        setMapArray(JSON.parse(listArray))
+    },[]);
 
     return (
         <AppLayout> 
@@ -47,9 +62,11 @@ const MiLista = () => {
                                 image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
                                 title={item.original_title || item.original_name}
                                 buttons={
-                                    <Tooltip label='Guardada'>
-                                        <i className="bi bi-bookmark-fill text-danger"></i>
-                                    </Tooltip>  
+                                    <>
+                                        <Tooltip label='Quitar'>
+                                            <i className="bi bi-bookmark-fill text-danger"  onClick={() => {deleteListItem(item, index)}} />
+                                        </Tooltip>
+                                    </>
                                 }
                             />
                         </>

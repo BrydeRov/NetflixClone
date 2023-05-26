@@ -22,12 +22,14 @@ const Index = () => {
     const [movieShow, setMovieShow] = useState(null)
     const [query , setQuery] = useState(null);
     const [loading , setLoading] = useState(true);
-    const movieURL = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&api_key=${API_KEY}`
-    const [array, setArray] = useState([localStorage.getItem("list")]);
+    const [myList, setMyList] = useState();
+    const [movieVideo, setMovieVideo] = useState('');
     
+
+    const movieURL = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&api_key=${API_KEY}`
+
     const movieSearchURL = (input) => {
         setDataMovies(null)
-        setLoading(false)
         return `https://api.themoviedb.org/3/search/movie?query=${input}&api_key=${API_KEY}`;
     }
 
@@ -37,21 +39,24 @@ const Index = () => {
         setDataMovies(data)
         setLoading(false)
     }
+    
 
-    useEffect(() => {
-        fetchDataMovies()
-    }, []);
-
-    const showMovie = (data) => {
-        setMovieShow(data);
+    const fetchVideo = async (movie_id) => {
+        const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}/videos?language=en-US&api_key=${API_KEY}`)
+        setMovieVideo(data?.results[0].key)
     }
     
+    const showMovie = (data) => {
+        fetchVideo(data.id)
+        setMovieShow(data);
+    }
+
     const addToList = (data) => {
         const localList = localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : localStorage.setItem("list" , '[]')
         localList === undefined ? [data] : localList.push(data);
 
         localStorage.setItem("list" , JSON.stringify(localList))
-
+        
         toast({
             title: data.original_title + ' agregada a tu lista 🎥',
             description: "¡Ve a tu lista para ver las peliculas guardadas!",
@@ -60,7 +65,7 @@ const Index = () => {
             isClosable: true,
         })
     }
-
+    
     const handleChange = (event) => {
         setQuery(event.target.value);
     };
@@ -70,7 +75,11 @@ const Index = () => {
             fetchDataMovies(    )
         }
     };
-
+    
+    useEffect(() => {
+        fetchDataMovies()
+        setMyList(JSON.parse(localStorage.getItem('list')))
+    }, []);
     
     return (
         <AppLayout 
@@ -89,25 +98,26 @@ const Index = () => {
                 [...Array(15)].map((_, index) => (
                     <Skeleton
                         key={index}
+                        startColor='gray.400' 
+                        endColor='red.500'
                         height='180px'
                         width='330px'
                         className='rounded m-3'
                     />
                 )) : movieShow === null ? dataMovies?.results?.filter(item => item.backdrop_path != null).map((item, index) => {
                     return (
-                        <>
+                        <div key={index}>
                             <MovieCard
-                                key={index}
                                 onClick={() => {showMovie(item)}}
                                 image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
                                 title={item.original_title}
                                 buttons={
-                                    <Tooltip label='Agregar'>
-                                        <i className="bi bi-bookmark" onClick={() => {addToList(item)}}></i>
+                                    <Tooltip label={myList?.find(el => el.original_title == item.original_title) ? 'Remover' : 'Agregar'}>
+                                        <i className={`${myList?.find(el => el.original_title == item.original_title) ? 'bi bi-bookmark-fill text-danger' : 'bi bi-bookmark'}`} onClick={() => {addToList(item)}}></i>
                                     </Tooltip>
                                 }
                             />
-                        </>
+                        </div>
                     )
                 }) :
                     <>
@@ -117,6 +127,7 @@ const Index = () => {
                             title={movieShow?.original_title}
                             description={movieShow?.overview}
                             date={movieShow?.release_date}
+                            videoKey={movieVideo}
                             footer={
                                 <>
                                     <Button colorScheme='red' onClick={() => {setMovieShow(null)}} >

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 import AppLayout from './Layouts/AppLayout';
-
+import { Link } from 'react-router-dom';
 import MovieCard from '../Components/MovieCard';
 import ShowMovie from '../Components/ShowMovie';
 
 import { Button, Tooltip } from '@chakra-ui/react'
 
-import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon, SmallAddIcon } from '@chakra-ui/icons';
 
 const MiLista = () => {
     const [movieShow, setMovieShow] = useState(null);
@@ -31,9 +31,11 @@ const MiLista = () => {
 
     return (
         <AppLayout> 
-            <Button onClick={() => {deleteList()}} leftIcon={<DeleteIcon />} colorScheme='red' variant='solid'>
-                Borrar peliculas de mi lista
-            </Button>
+            <div className='d-flex flex-wrap justify-content-start container'>
+                <Button className="my-2" onClick={() => {deleteList()}} leftIcon={<DeleteIcon />} colorScheme='red' variant='solid'>
+                    Borrar peliculas de mi lista
+                </Button>
+            </div>
 
             <div className='d-flex flex-wrap justify-content-center'>
                 {movieShow === null ? mapArray?.filter(item => item.backdrop_path != null).map((item, index) => {
@@ -43,10 +45,10 @@ const MiLista = () => {
                                 key={index}
                                 onClick={() => {showMovie(item)}}
                                 image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
-                                title={item.original_title}
+                                title={item.original_title || item.original_name}
                                 buttons={
-                                    <Tooltip label='Agregar'>
-                                        <i className="bi bi-bookmark"></i>
+                                    <Tooltip label='Guardada'>
+                                        <i className="bi bi-bookmark-fill text-danger"></i>
                                     </Tooltip>  
                                 }
                             />

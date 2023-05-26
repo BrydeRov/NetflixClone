@@ -9,16 +9,19 @@ import AppLayout from '../Layouts/AppLayout'
 import MovieCard from '../../Components/MovieCard'
 import ShowMovie from '../../Components/ShowMovie'
 // Chakra UI
-import { Button, Input } from '@chakra-ui/react';
+import { Button, Input, useToast, Tooltip } from '@chakra-ui/react';
 
 const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY
 
 const URL = `https://api.themoviedb.org/3/tv/top_rated?language=en-US&api_key=${API_KEY}`;
 
 const Index = () => {
+    const toast = useToast()
     const [dataTV, setDataTV] = useState([])
     const [tvShow, setTvShow] = useState(null)
     const [query, setQuery] = useState(null);
+    const [myList, setMyList] = useState();
+    
     const [loading, setLoading] = useState(true);
     
     const tvSearchURL =  (input) => {
@@ -33,7 +36,9 @@ const Index = () => {
     
     useEffect(() => {
         fetchDataTV()
+        setMyList(JSON.parse(localStorage.getItem("list")))
     }, []);
+
 
     const showTV = (data) => {
         setTvShow(data);
@@ -48,12 +53,20 @@ const Index = () => {
             fetchDataTV()
         }
     };
-    
+
     const addToList = (data) => {
         const localList = localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : localStorage.setItem("list" , '[]')
         localList === undefined ? [data] : localList.push(data);
 
         localStorage.setItem("list" , JSON.stringify(localList))
+
+        toast({
+            title: data.original_name + ' agregada a tu lista 🎥',
+            description: "¡Ve a tu lista para ver las peliculas guardadas!",
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+        })
     }
     
     return (
@@ -74,7 +87,11 @@ const Index = () => {
                             onClick={() => {showTV(item)}}
                             image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
                             title={item.name}
-                            footer="wenas"
+                            buttons={
+                                <Tooltip label={myList?.find(el => el.name == item.name) ? 'Agregada' : 'Agregar'}>
+                                    <i className={`${myList?.find(el => el.name == item.name) ? 'bi bi-bookmark-fill text-danger' : 'bi bi-bookmark'}`} onClick={() => {addToList(item)}}></i>
+                                </Tooltip>
+                            }
                         />
                     </>
                 )

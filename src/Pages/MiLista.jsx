@@ -6,8 +6,6 @@ import ShowMovie from '../Components/ShowMovie';
 
 import { Button, Tooltip, useToast } from '@chakra-ui/react'
 
-import { DeleteIcon } from '@chakra-ui/icons';
-
 const MiLista = () => {
     const toast = useToast()
     
@@ -35,6 +33,7 @@ const MiLista = () => {
         toast({
             title: `Se ha borrado ${data.original_title || data.original_name} de tu lista`,
             status: 'success',
+            variant: 'left-accent',
             duration: 2000,
             isClosable: true,
         })    
@@ -46,12 +45,6 @@ const MiLista = () => {
 
     return (
         <AppLayout> 
-            <div className='d-flex flex-wrap justify-content-start container'>
-                <Button className="my-2" onClick={() => {deleteList()}} leftIcon={<DeleteIcon />} colorScheme='red' variant='solid'>
-                    Borrar peliculas de mi lista
-                </Button>
-            </div>
-
             <div className='d-flex flex-wrap justify-content-center'>
                 {movieShow === null ? mapArray?.filter(item => item.backdrop_path != null).map((item, index) => {
                     return (

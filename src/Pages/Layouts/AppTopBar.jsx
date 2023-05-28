@@ -7,7 +7,7 @@ const AppTopBar = (props) => {
         <div>
             <nav className="navbar navbar-expand-lg">
                 <div className="container-fluid">
-                    <Link className="navbar-brand mx-4" to="/">
+                    <Link className="navbar-brand mx-4" to="https://www.netflix.com">
                         <img src={logo} width='80'/>
                     </Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"

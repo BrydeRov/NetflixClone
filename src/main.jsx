@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client'
 import './assets/css/mains.css'
 
 // Pages
-import AppLayout from './Pages/Layouts/AppLayout'
+import Home from './Pages/Home'
 import MoviesHome from './Pages/Movies/Index'
 import TVHome from './Pages/TV/Index'
 import MiLista from './Pages/MiLista'
@@ -29,7 +29,7 @@ const theme = {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <AppLayout />,
+    element: <Home />,
   },
   {
     path: "/Movies",

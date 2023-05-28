@@ -48,9 +48,8 @@ const MiLista = () => {
             <div className='d-flex flex-wrap justify-content-center'>
                 {movieShow === null ? mapArray?.filter(item => item.backdrop_path != null).map((item, index) => {
                     return (
-                        <>
+                        <div key={index}>
                             <MovieCard
-                                key={index}
                                 onClick={() => {showMovie(item)}}
                                 image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
                                 title={item.original_title || item.original_name}
@@ -62,7 +61,7 @@ const MiLista = () => {
                                     </>
                                 }
                             />
-                        </>
+                        </div>
                     )
                 }) :
                     <>

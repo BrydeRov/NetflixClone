@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react';
+
+// Components
 import AppTopBar from './AppTopBar';
+import AppFooter from './AppFooter';
+
+// Chakra
 import { ChakraProvider, extendTheme, Box, CSSReset, ColorModeScript } from "@chakra-ui/react";
 
 function AppLayout(props) {
@@ -27,6 +32,8 @@ function AppLayout(props) {
                     </div>
                 </Box>
             </div>
+
+            <AppFooter />
         </ChakraProvider>
     );
 }

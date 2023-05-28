@@ -5,48 +5,48 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 // Components
-import AppLayout from '../Layouts/AppLayout'
-import MovieCard from '../../Components/MovieCard'
-import ShowMovie from '../../Components/ShowMovie'
+import AppLayout from './Layouts/AppLayout'
+import MovieCard from '../Components/MovieCard'
+import ShowMovie from '../Components/ShowMovie'
 // Chakra UI
 import { Button, Input, useToast, Tooltip } from '@chakra-ui/react';
 
 const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY
 
-const URL = `https://api.themoviedb.org/3/tv/top_rated?language=en-US&api_key=${API_KEY}`;
+const URL = `https://api.themoviedb.org/3/trending/all/day?language=en-US&api_key=${API_KEY}`;
 
-const Index = () => {
+const Home = () => {
     const toast = useToast()
 
     // UseState
     const [myList, setMyList] = useState();
-    const [dataTV, setDataTV] = useState([])
+    const [data, setData] = useState([])
     const [tvVideo, setTvVideo] = useState();
     const [query, setQuery] = useState(null);
-    const [tvShow, setTvShow] = useState(null)
+    const [show, setShow] = useState(null)
+
     const [loading, setLoading] = useState(true);
     
     
     const tvSearchURL =  (input) => {
-        setDataTV(null)
-        return `https://api.themoviedb.org/3/search/tv?query=${input}&api_key=${API_KEY}`;
+        setData(null)
+        return `https://api.themoviedb.org/3/search/multi?query=${input}&include_adult=false&language=en-US&page=1&api_key=${API_KEY}`;
     };
 
-    const fetchDataTV = async () =>{
+    const fetchData = async () =>{
         const { data } = await axios.get(query === null ? URL : tvSearchURL(query))
-        setDataTV(data)
+        setData(data)
     } 
 
     const fetchVideo = async (tv_id) => {
         const { data } = await axios.get(`https://api.themoviedb.org/3/tv/${tv_id}/season/1/videos?api_key=${API_KEY}`)
         setTvVideo(data?.results[0]?.key)
-        console.log(data.results[0].key)
     }
 
-    const showTV = (data) => {
+    const showSelected = (data) => {
         setTvVideo(null)
         fetchVideo(data.id);
-        setTvShow(data);
+        setShow(data);
     }
 
     const handleChange = (event) => {
@@ -55,7 +55,7 @@ const Index = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            fetchDataTV()
+            fetchData()
         }
     };
 
@@ -64,9 +64,11 @@ const Index = () => {
         localList === undefined ? [data] : localList.push(data);
 
         localStorage.setItem("list" , JSON.stringify(localList))
+        
         setMyList(localList)
+
         toast({
-            title: data.original_name + ' agregada a tu lista 🎥',
+            title: data.name || data.original_title + ' agregada a tu lista 🎥',
             description: "¡Ve a tu lista para ver las peliculas guardadas!",
             status: 'success',
             duration: 2000,
@@ -75,7 +77,7 @@ const Index = () => {
     }
 
     useEffect(() => {
-        fetchDataTV()
+        fetchData()
         setMyList(JSON.parse(localStorage.getItem("list")))
     }, []);
     
@@ -90,7 +92,7 @@ const Index = () => {
         >
             {/* ==================== CAROUSEL ==================== */}
             {
-                tvShow ? '' :
+                show ? '' :
                 <div id="carouselExampleCaptions" className="carousel slide">
                     <div className="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active"
@@ -101,13 +103,13 @@ const Index = () => {
                             aria-label="Slide 3"></button>
                     </div>
                     <div className="carousel-inner">
-                        {dataTV?.results?.slice(0 , 3).map((item, index) => {
+                        {data?.results?.slice(0 , 3).map((item, index) => {
                             return (
                                 <div key={index}>
                                     <div className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                                         <img src={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`} className="d-block w-100" style={{height: '75vh', objectFit: 'cover', objectPosition:'50% 15%'}} alt={item.name} />
                                         <div className="carousel-caption d-none d-md-block">
-                                            <h5>{item.name}</h5>
+                                            <h5>{item.name || item.original_title}</h5>
                                             {/* <p>{index}</p> */}
                                         </div>                                
                                     </div>
@@ -128,30 +130,30 @@ const Index = () => {
                 </div>
             }
             
-            {/* ==================== TV CARDS ==================== */}
+            {/* ==================== CARDS ==================== */}
             <div className='d-flex flex-wrap justify-content-center'>
-                { tvShow === null ? dataTV?.results?.filter(item => item.backdrop_path != null).map((item, index) => {
+                { show === null ? data?.results?.filter(item => item.backdrop_path != null).map((item, index) => {
                     return (
                         <div key={index}>
-                                <MovieCard
-                                    onClick={() => {showTV(item)}}
-                                    image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
-                                    title={item.name}
-                                    buttons={
-                                        <Tooltip label={myList?.find(el => el.name == item.name) ? 'Agregada' : 'Agregar'}>
-                                            <i className={`${myList?.find(el => el.name == item.name) ? 'bi bi-bookmark-fill text-danger' : 'bi bi-bookmark'}`} onClick={() => {addToList(item)}}></i>
-                                        </Tooltip>
-                                    }
-                                />
+                            <MovieCard
+                                onClick={() => {showSelected(item)}}
+                                image={'https://image.tmdb.org/t/p/original/' + item.backdrop_path}
+                                title={item.name || item?.original_title}
+                                buttons={
+                                    <Tooltip label={myList?.find(el => (el.original_title || el.name) == (item.name ? item.name : item.original_title)) ? 'Agregada' : 'Agregar'}>
+                                        <i className={`${myList?.find(el => (el.original_title || el.name) == (item.name ? item.name : item.original_title)) ? 'bi bi-bookmark-fill text-danger' : 'bi bi-bookmark'}`} onClick={() => {addToList(item)}}></i>
+                                    </Tooltip>
+                                }
+                            />
                         </div>
                     )
                 }) :
                     <>
                         <br />
                         <ShowMovie
-                            coverImage={'https://image.tmdb.org/t/p/original/' + tvShow?.poster_path}
-                            title={tvShow?.original_title}
-                            description={tvShow?.overview}
+                            coverImage={'https://image.tmdb.org/t/p/original/' + show?.poster_path}
+                            title={show?.original_title || show?.name}
+                            description={show?.overview}
                             videoFrame={
                                 (tvVideo != undefined || null) ? 
                                 <iframe 
@@ -167,10 +169,10 @@ const Index = () => {
                             // videoKey={tvVideo}
                             footer={
                                 <>
-                                    <Button colorScheme='red' onClick={() => {setTvShow(null)}} >
+                                    <Button colorScheme='red' onClick={() => {setShow(null)}} >
                                         Regresar
                                     </Button>
-                                    <Button className='mx-2' colorScheme='messenger' onClick={() => {setTvShow(null)}} >
+                                    <Button className='mx-2' colorScheme='messenger' onClick={() => {setShow(null)}} >
                                         Ver Trailer
                                     </Button>
                                 </>
@@ -183,4 +185,4 @@ const Index = () => {
     )
 }
 
-export default Index;
+export default Home;

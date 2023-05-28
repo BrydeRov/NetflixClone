@@ -33,7 +33,7 @@ function AppLayout(props) {
                 </Box>
             </div>
 
-            <AppFooter />
+            <AppFooter/>
         </ChakraProvider>
     );
 }

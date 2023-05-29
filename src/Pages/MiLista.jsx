@@ -26,11 +26,6 @@ const MiLista = () => {
     const tvVideoURL = (input) => {
         return `https://api.themoviedb.org/3/tv/${input}/videos?language=en-US&api_key=${API_KEY}`
     }
-    
-    const globalSearch =  (input) => {
-        setData(null)
-        return `https://api.themoviedb.org/3/search/multi?query=${input}&include_adult=false&language=en-US&page=1&api_key=${API_KEY}`;
-    };
 
     const fetchVideo = async (item) => {
         const { data } = await axios.get(item.original_title ? movieVideoURL(item.id) : tvVideoURL(item.id))
@@ -68,6 +63,12 @@ const MiLista = () => {
 
     return (
         <AppLayout> 
+            {movieShow == null ? 
+                <div className='container'>
+                    <p className='fs-4 my-3'>Mi Lista</p>
+                </div> 
+                : ''
+            }
             {
                 mapArray?.length > 0 ?
                 <div className='d-flex flex-wrap justify-content-center'>

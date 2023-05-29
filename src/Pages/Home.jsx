@@ -21,31 +21,38 @@ const Home = () => {
     // UseState
     const [myList, setMyList] = useState();
     const [data, setData] = useState([])
-    const [tvVideo, setTvVideo] = useState();
+    const [itemVideo, setItemVideo] = useState();
     const [query, setQuery] = useState(null);
     const [show, setShow] = useState(null)
 
     const [loading, setLoading] = useState(true);
     
+    const movieVideoURL = (input) => {
+        return `https://api.themoviedb.org/3/movie/${input}/videos?language=en-US&api_key=${API_KEY}`;
+    }
+
+    const tvVideoURL = (input) => {
+        return `https://api.themoviedb.org/3/tv/${input}/videos?language=en-US&api_key=${API_KEY}`
+    }
     
-    const tvSearchURL =  (input) => {
+    const globalSearch =  (input) => {
         setData(null)
         return `https://api.themoviedb.org/3/search/multi?query=${input}&include_adult=false&language=en-US&page=1&api_key=${API_KEY}`;
     };
 
     const fetchData = async () =>{
-        const { data } = await axios.get(query === null ? URL : tvSearchURL(query))
+        const { data } = await axios.get(query === null ? URL : globalSearch(query))
         setData(data)
     } 
 
-    const fetchVideo = async (tv_id) => {
-        const { data } = await axios.get(`https://api.themoviedb.org/3/tv/${tv_id}/season/1/videos?api_key=${API_KEY}`)
-        setTvVideo(data?.results[0]?.key)
+    const fetchVideo = async (item) => {
+        const { data } = await axios.get(item.original_title ? movieVideoURL(item.id) : tvVideoURL(item.id))
+        setItemVideo(data?.results[0]?.key)
     }
 
     const showSelected = (data) => {
-        setTvVideo(null)
-        fetchVideo(data.id);
+        setItemVideo(null);
+        fetchVideo(data);
         setShow(data);
     }
 
@@ -155,18 +162,18 @@ const Home = () => {
                             title={show?.original_title || show?.name}
                             description={show?.overview}
                             videoFrame={
-                                (tvVideo != undefined || null) ? 
-                                <iframe 
-                                    width="560" 
-                                    height="315" 
-                                    src={`https://www.youtube.com/embed/${tvVideo}`} 
-                                    title="YouTube video player" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                    allowFullScreen
-                                />
+                                (itemVideo != undefined || null) ? 
+                                    <iframe 
+                                        width="100%" 
+                                        height="600" 
+                                        src={`https://www.youtube.com/embed/${itemVideo}`} 
+                                        title="YouTube video player" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                        allowFullScreen
+                                    />
                                 : ''
                             }
-                            // videoKey={tvVideo}
+                            // videoKey={itemVideo}
                             footer={
                                 <>
                                     <Button colorScheme='red' onClick={() => {setShow(null)}} >

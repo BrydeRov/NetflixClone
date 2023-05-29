@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AppLayout from './Layouts/AppLayout';
 import MovieCard from '../Components/MovieCard';
@@ -6,17 +8,38 @@ import ShowMovie from '../Components/ShowMovie';
 
 import { Button, Tooltip, useToast } from '@chakra-ui/react'
 
+const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY
+
 const MiLista = () => {
     const toast = useToast()
     
     const [movieShow, setMovieShow] = useState(null);
     const [mapArray, setMapArray] = useState(null);
-    
+    const [itemVideo, setItemVideo] = useState();
+
     const listArray = localStorage.getItem("list");
     
+    const movieVideoURL = (input) => {
+        return `https://api.themoviedb.org/3/movie/${input}/videos?language=en-US&api_key=${API_KEY}`;
+    }
+
+    const tvVideoURL = (input) => {
+        return `https://api.themoviedb.org/3/tv/${input}/videos?language=en-US&api_key=${API_KEY}`
+    }
+    
+    const globalSearch =  (input) => {
+        setData(null)
+        return `https://api.themoviedb.org/3/search/multi?query=${input}&include_adult=false&language=en-US&page=1&api_key=${API_KEY}`;
+    };
+
+    const fetchVideo = async (item) => {
+        const { data } = await axios.get(item.original_title ? movieVideoURL(item.id) : tvVideoURL(item.id))
+        setItemVideo(data?.results[0]?.key)
+    }
 
     const showMovie = (data) => {
         setMovieShow(data);
+        fetchVideo(data);
     }
 
     const deleteList = () => {
@@ -73,6 +96,18 @@ const MiLista = () => {
                                 title={movieShow?.original_title}
                                 description={movieShow?.overview}
                                 date={movieShow?.release_date}
+                                videoFrame={
+                                    (itemVideo != undefined || null) ? 
+                                        <iframe 
+                                            width="100%" 
+                                            height="600" 
+                                            src={`https://www.youtube.com/embed/${itemVideo}`} 
+                                            title="YouTube video player" 
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                            allowFullScreen
+                                        />
+                                    : ''
+                                }
                                 footer={
                                     <>
                                         <Button colorScheme='red' onClick={() => {setMovieShow(null)}} >
